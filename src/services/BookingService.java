@@ -1,10 +1,7 @@
 package services;
 
 import java.util.ArrayList;
-
 import models.Booking;
-
-
 
 public class BookingService {
 ArrayList<Booking> data;

@@ -1,7 +1,7 @@
 package models;
 
 public class Lapangan {
-    public String id;
+    public int  id;
     public String nama;
     public String harga;
     public String kategori;
