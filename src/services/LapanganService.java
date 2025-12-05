@@ -10,10 +10,9 @@ public class LapanganService {
         this.data = new ArrayList<>();
     }
     public void tambahLapangan(Lapangan lapangan) {
-        if (getLapangan(lapangan.id) !=null) {
-            System.out.println("Error lapangan " + lapangan.id + " sudah ada");
-            return;
-        }
+        int idBaru = this.data.size() + 1;
+        lapangan.id = idBaru;
+
         this.data.add(lapangan);
         System.out.println("Lapangan "+ lapangan.id +" ditambahkan ");
     }
