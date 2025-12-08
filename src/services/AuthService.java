@@ -7,7 +7,7 @@ public class AuthService {
     private boolean isAuthenticated = false;
 
     public AuthService(){
-        this.admin = new User("admin", "12345");
+        this.admin = new User("admin", "12345", "081234567890");
     }
 
     public boolean isAuthenticated() {

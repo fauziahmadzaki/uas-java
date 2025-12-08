@@ -4,56 +4,39 @@ import java.util.ArrayList;
 import models.Lapangan;
 
 public class LapanganService {
-    ArrayList<Lapangan> data;
+    private ArrayList<Lapangan> data;
 
     public LapanganService(){
         this.data = new ArrayList<>();
-    }
-    public void tambahLapangan(Lapangan lapangan) {
-        if (getLapangan(lapangan.id) !=null) {
-            System.out.println("Error lapangan " + lapangan.id + " sudah ada");
-            return;
-        }
-        this.data.add(lapangan);
-        System.out.println("Lapangan "+ lapangan.id +" ditambahkan ");
+       // Seeding Data
+        tambahLapangan(new Lapangan(0, "Lapangan A (Sintetis)", 100000, "Sintetis"));
+        tambahLapangan(new Lapangan(0, "Lapangan B (Matras)", 80000, "Matras"));
     }
 
-    public void editLapangan(int id, Lapangan lapanganBaru) {
-        int index = -1;
-        for (int i = 0; i < this.data.size(); i++) {
-            if (this.data.get(i).id == id){
-                index = i;
-                break;
+    public void tambahLapangan(Lapangan l) {
+        l.id = data.isEmpty() ? 1 : data.get(data.size()-1).id + 1; 
+        data.add(l);
+    }
+
+    public void updateLapangan(int id, Lapangan lBaru) {
+        for(int i=0; i<data.size(); i++) {
+            if(data.get(i).id == id) {
+                lBaru.id = id; 
+                data.set(i, lBaru);
+                return;
             }
         }
-        if (index != -1){
-            this.data.set(index, lapanganBaru);
-            System.out.println("Lapangan dengan "+ id +" telah di ubah");
-        }else{
-            System.out.println("Lapangan dengan "+ id +" tidak ditemukan");
-        }
     }
 
-    public void hapusLapangan(int id) {
-        Lapangan hapusLapangan = getLapangan(id);
-        
-        if (hapusLapangan != null){
-            this.data.remove(hapusLapangan);
-            System.out.println("Lapangan dengan "+ id+ " telah dihapus");
-        }else{
-            System.out.println("Lapangan denga "+ id+ " tidak ditemukan");
-        }
+    public boolean hapusLapangan(int id) {
+        return data.removeIf(l -> l.id == id);
     }
 
-    public ArrayList<Lapangan> getAll(){
-        return this.data;
-    }
+    public ArrayList<Lapangan> getAll(){ return this.data; }
 
     public Lapangan getLapangan(int id) {
-        for (Lapangan lapangan : this.data) {
-            if (lapangan.id == id){
-                return lapangan;
-            }
+        for (Lapangan l : data) {
+            if (l.id == id) return l;
         }
         return null;
     }

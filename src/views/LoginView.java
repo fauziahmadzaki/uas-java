@@ -3,8 +3,7 @@ package views;
 import javax.swing.*;
 import java.awt.*;
 import services.AuthService;
-import views.components.LabeledPasswordInput;
-import views.components.LabeledTextInput;
+import views.components.*;
 import views.components.Button;
 import views.frames.AppFrame;
 
@@ -12,70 +11,57 @@ public class LoginView extends AppFrame {
     private AuthService authService;
     private LabeledTextInput usernameField;
     private LabeledPasswordInput passwordField;
-    private Button loginButton;
+    private Runnable onSuccess; // Callback
 
     public LoginView(AuthService authService){
-        super("Login", 350, 350);
+        super("Login Sistem", 400, 350);
         this.authService = authService;
-        
         initComponents();   
     }
+
+    public void setOnSuccess(Runnable onSuccess) {
+        this.onSuccess = onSuccess;
+    }
+
     @Override
     protected void initComponents(){
-        JPanel jPanel = new JPanel();
-        jPanel.setLayout(new GridBagLayout());
+        JPanel jPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        
-
-        JLabel titlePanel = new JLabel("Login Kasir");
-        titlePanel.setFont(new Font("Arial", Font.BOLD, 16));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 2;
-        jPanel.add(titlePanel, gbc);
-        gbc.gridwidth = 1;
-       
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        usernameField = new LabeledTextInput("Username: ");
+
+        JLabel title = new JLabel("LOGIN KASIR", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc.gridx=0; gbc.gridy=0;
+        jPanel.add(title, gbc);
+
+        usernameField = new LabeledTextInput("Username:");
+        gbc.gridy=1;
         jPanel.add(usernameField, gbc);
 
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        passwordField = new LabeledPasswordInput("Password: ");
+        passwordField = new LabeledPasswordInput("Password:");
+        gbc.gridy=2;
         jPanel.add(passwordField, gbc);
-        
 
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
-        loginButton = new Button("Login");
+        Button loginButton = new Button("MASUK");
+        gbc.gridy=3;
         jPanel.add(loginButton, gbc);
 
         loginButton.addActionListener(e -> handleLogin());
-        getRootPane().setDefaultButton(loginButton);
-
-        add(jPanel);
-
-    }
         
+        add(jPanel);
+    }
 
     private void handleLogin(){
         String username = usernameField.getText();
         String password = new String(passwordField.getText());
 
-        boolean success = authService.login(username, password);
-        if(success){
-            JOptionPane.showMessageDialog(this, "Login berhasil, selamat datang" + username);
-
-        }else{
-            JOptionPane.showMessageDialog(this, "Login gagal, username atau password salah", "Error" ,JOptionPane.ERROR_MESSAGE);
+        if(authService.login(username, password)){
+            JOptionPane.showMessageDialog(this, "Login Berhasil!");
+            this.dispose(); // Tutup window login
+            if(onSuccess != null) onSuccess.run(); // Jalankan dashboard
+        } else {
+            JOptionPane.showMessageDialog(this, "Username/Password Salah!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
