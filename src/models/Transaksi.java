@@ -2,8 +2,8 @@ package models;
 
 public class Transaksi {
     public int id;
-    public int id_booking; // Relasi ke ID Booking
-    public double nominal; // Menggunakan double untuk presisi mata uang
+    public int id_booking; 
+    public double nominal; 
 
     public Transaksi(int id, int id_booking, double nominal) {
         this.id = id;

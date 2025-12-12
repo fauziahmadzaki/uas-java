@@ -11,7 +11,7 @@ public class LoginView extends AppFrame {
     private AuthService authService;
     private LabeledTextInput usernameField;
     private LabeledPasswordInput passwordField;
-    private Runnable onSuccess; // Callback
+    private Runnable onSuccess; 
 
     public LoginView(AuthService authService){
         super("Login Sistem", 400, 350);
@@ -58,8 +58,8 @@ public class LoginView extends AppFrame {
 
         if(authService.login(username, password)){
             JOptionPane.showMessageDialog(this, "Login Berhasil!");
-            this.dispose(); // Tutup window login
-            if(onSuccess != null) onSuccess.run(); // Jalankan dashboard
+            this.dispose(); 
+            if(onSuccess != null) onSuccess.run();
         } else {
             JOptionPane.showMessageDialog(this, "Username/Password Salah!", "Error", JOptionPane.ERROR_MESSAGE);
         }

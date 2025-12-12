@@ -8,7 +8,6 @@ import views.panels.*;
 import views.components.Button;
 
 public class DashboardView extends AppFrame {
-    // Service dependencies
     private AuthService authService;
     private LapanganService lapanganService;
     private BookingService bookingService;
@@ -17,7 +16,7 @@ public class DashboardView extends AppFrame {
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
-    // Constructor diperbarui menerima TransaksiService
+    
     public DashboardView(AuthService as, LapanganService ls, BookingService bs, TransaksiService ts) {
         super("Sistem Booking Futsal", 900, 600);
         this.authService = as;
@@ -32,7 +31,7 @@ public class DashboardView extends AppFrame {
     protected void initComponents() {
         setLayout(new BorderLayout());
 
-        // --- 1. Sidebar Menu ---
+        
         JPanel sidebar = new JPanel(new GridLayout(10, 1, 5, 5));
         sidebar.setPreferredSize(new Dimension(220, 0));
         sidebar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -44,7 +43,7 @@ public class DashboardView extends AppFrame {
 
         Button btnLapangan = new Button("Kelola Lapangan");
         Button btnBooking = new Button("Booking Aktif");
-        Button btnTransaksi = new Button("Riwayat Transaksi"); // Menu Baru
+        Button btnTransaksi = new Button("Riwayat Transaksi");
         Button btnLogout = new Button("Logout");
 
         sidebar.add(btnLapangan);
@@ -68,7 +67,7 @@ public class DashboardView extends AppFrame {
 
         add(mainPanel, BorderLayout.CENTER);
 
-        // --- 3. Event Handling ---
+
         btnLapangan.addActionListener(e -> {
             pnlLapangan.refreshData();
             cardLayout.show(mainPanel, "LAPANGAN");
@@ -84,23 +83,22 @@ public class DashboardView extends AppFrame {
             cardLayout.show(mainPanel, "TRANSAKSI");
         });
 
-        // --- PERBAIKAN BUG LOGOUT DISINI ---
         btnLogout.addActionListener(e -> {
-            // 1. Proses Logout di Service
+           
             authService.logout();
             
-            // 2. Tutup Dashboard saat ini
+           
             this.dispose();
 
-            // 3. Buat Login View Baru
+           
             LoginView loginView = new LoginView(authService);
             
-            // 4. PENTING: Pasang kembali Logic "Apa yang terjadi jika login sukses"
+           
             loginView.setOnSuccess(() -> {
                 new DashboardView(authService, lapanganService, bookingService, transaksiService).setVisible(true);
             });
 
-            // 5. Tampilkan Login
+           
             loginView.setVisible(true);
         });
     }

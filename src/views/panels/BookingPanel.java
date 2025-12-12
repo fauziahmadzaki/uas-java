@@ -111,7 +111,7 @@ public class BookingPanel extends JPanel {
                     inputNama.setText(table.getValueAt(row, 1).toString());
                     inputNoTelp.setText(table.getValueAt(row, 2).toString());
                     
-                    // Set Combo
+                   
                     String namaLap = table.getValueAt(row, 3).toString();
                     for(int i=0; i<comboLapangan.getItemCount(); i++){
                         if(comboLapangan.getItemAt(i).nama.equals(namaLap)){
@@ -147,7 +147,6 @@ public class BookingPanel extends JPanel {
     }
 
     private void simpanBooking() {
-        // --- VALIDASI START ---
         Lapangan l = (Lapangan) comboLapangan.getSelectedItem();
         if(l == null) {
             JOptionPane.showMessageDialog(this, "Pilih lapangan terlebih dahulu!");
@@ -159,24 +158,24 @@ public class BookingPanel extends JPanel {
         String durasiStr = inputDurasi.getText().trim();
         String tanggal = inputTanggal.getText().trim();
 
-        // 1. Cek Kosong
+       
         if (nama.isEmpty() || hp.isEmpty() || durasiStr.isEmpty() || tanggal.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Semua data harus diisi!", "Peringatan", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 2. Validasi No HP (Angka, 10-13 digit)
+
         if (!hp.matches("\\d{10,13}")) {
             JOptionPane.showMessageDialog(this, "Nomor Telepon tidak valid!\nHarus berupa angka 10-13 digit.", "Error Validasi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // 3. Validasi Durasi (Harus Angka & Positif)
+        
         int durasi = 0;
         try {
             durasi = Integer.parseInt(durasiStr);
             if (durasi <= 0) throw new NumberFormatException();
-            if (durasi > 24) { // Contoh validasi bisnis: max booking 24 jam
+            if (durasi > 24) { 
                  JOptionPane.showMessageDialog(this, "Durasi maksimal 24 jam!", "Error Validasi", JOptionPane.WARNING_MESSAGE);
                  return;
             }
@@ -184,18 +183,12 @@ public class BookingPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Durasi harus berupa angka positif!", "Error Validasi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // --- VALIDASI END ---
+        
 
         double total = l.harga * durasi;
 
-        // Proses Simpan
-        // Pastikan Anda sudah update Booking.java agar punya field noHp
-        // Untuk contoh ini, saya simpan noHp di objek Booking jika konstruktor mendukung
-        // Booking b = new Booking(0, l.id, nama, hp, tanggal, durasi, total, "Booked");
-        
-        // Menggunakan konstruktor asumsi (sesuaikan dengan Booking.java Anda)
         Booking b = new Booking(0, l.id, nama, tanggal, durasi, total, "Booked");
-        // Jika ada field noHp manual: b.noHp = hp;
+    
 
         if (selectedBookingId == -1) {
             bookingService.tambahBooking(b);
@@ -209,9 +202,6 @@ public class BookingPanel extends JPanel {
         refreshTable();
     }
     
-    // ... (Sisa method hapusBooking, resetForm, dll sama seperti kode sebelumnya) ...
-    // Pastikan copy method resetForm, hapusBooking, prosesSelesai, refreshTable, refreshForm dari kode sebelumnya.
-
     private void hapusBooking() {
         if(selectedBookingId != -1) {
             int confirm = JOptionPane.showConfirmDialog(this, "Hapus booking ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);

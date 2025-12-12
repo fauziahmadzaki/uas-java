@@ -7,7 +7,6 @@ public class App {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             
-            // Instansiasi semua service
             AuthService authService = new AuthService();
             LapanganService lapanganService = new LapanganService();
             BookingService bookingService = new BookingService();
